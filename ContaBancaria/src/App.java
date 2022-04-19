@@ -33,7 +33,7 @@ public class App {
                 int busca = scanner.nextInt();
 
                 for(int i = 0; i < vetorContas.length; i++){
-                    if(vetorContas[i].numeroConta == busca){
+                    if(vetorContas[i].NumeroConta == busca){
                         System.out.println(vetorContas[i].ToString());
                     }
                 }
@@ -132,7 +132,7 @@ public class App {
         for(int posReferencia = vetor.length; posReferencia > 0; posReferencia--){
             int trocas = 0;
             for(int posComp = 0; posComp < (posReferencia - 1); posComp++){
-                if(vetor[posComp].numeroConta > vetor[posComp+1].numeroConta){
+                if(vetor[posComp].NumeroConta > vetor[posComp+1].NumeroConta){
                     ContaBancaria aux = vetor[posComp];
 
                     vetor[posComp] = vetor[posComp+1];
