@@ -21,15 +21,7 @@ public class ContaBancaria {
     int NumeroConta;
     long CPFTitular;
     double Saldo;
-    List<Operacao> Operacoes = new ArrayList<Operacao>();
-
-    public void adicionarSaldo(double valor){
-        Saldo = Saldo + valor;
-    }
-
-    public void sacarSaldo(double valor){
-        Saldo = Saldo - valor;
-    }
+    List<Operacao> Extrato = new ArrayList<Operacao>();
 
     public ContaBancaria(int nConta, long CPF, double saldo){
         this.NumeroConta = nConta;
@@ -37,8 +29,33 @@ public class ContaBancaria {
         this.Saldo = saldo;
     }
 
-    public String ToString(){
-        return "A conta " + NumeroConta + " tem o CPF: " + CPFTitular + " como titular e possui " + Saldo + " de saldo.";
+    public void AdicionarSaldo(double valor){
+        Operacao op = new Operacao(NumeroConta, 0, valor);
+
+        Extrato.add(op);
+
+        Saldo += valor;
+    }
+
+    public void SacarSaldo(double valor){
+        Operacao op = new Operacao(NumeroConta, 1, valor);
+
+        Extrato.add(op);
+
+        Saldo -= valor;
+    }
+
+    public void CarregarOperacoes(Operacao[] vetor){
+
+        for(int i = 0; i < vetor.length; i++){
+            if(vetor[i].NumeroConta == this.NumeroConta){
+                Extrato.add(vetor[i]);
+            }
+        }
+    }
+
+    public String toString(){
+        return "Conta: " + NumeroConta + ", Saldo: " + Saldo;
     }
 
 }

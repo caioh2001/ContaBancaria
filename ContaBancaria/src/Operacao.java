@@ -12,4 +12,13 @@ public class Operacao {
         this.Valor = valor;
         Data = new Date(System.currentTimeMillis());
     }
+
+    public String toString(){
+        if(CodOperacao == 0){
+            return "Deposito de " + Valor + " na data " + Data + ".";
+        }
+        else{
+            return "Saque de " + Valor + " na data " + Data + ".";
+        }
+    }
 }
