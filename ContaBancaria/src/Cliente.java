@@ -16,11 +16,11 @@ public class Cliente {
         return "CPF: " + CPF + " ,Nome: " + Nome;
     }
 
-    public void CarregarContas(ContaBancaria[] vetor){
+    public void CarregarContas(List<ContaBancaria> lista){
 
-        for(int i = 0; i < vetor.length; i++){
-            if(vetor[i].CPFTitular == this.CPF){
-                Contas.add(vetor[i]);
+        for (ContaBancaria conta : lista) {
+            if(conta.CPFTitular == this.CPF){
+                Contas.add(conta);
             }
         }
     }

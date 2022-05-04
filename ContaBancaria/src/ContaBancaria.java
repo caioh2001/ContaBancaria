@@ -1,6 +1,3 @@
-import java.util.ArrayList;
-import java.util.List;
-
 public class ContaBancaria {
     
     // Crie uma classe ContaBancaria. Uma conta bancaria tem um numero, o CPF do titular e um saldo.
@@ -21,7 +18,7 @@ public class ContaBancaria {
     int NumeroConta;
     long CPFTitular;
     double Saldo;
-    List<Operacao> Extrato = new ArrayList<Operacao>();
+    FilaContas Extrato = new FilaContas(5);
 
     public ContaBancaria(int nConta, long CPF, double saldo){
         this.NumeroConta = nConta;
@@ -32,7 +29,7 @@ public class ContaBancaria {
     public void AdicionarSaldo(double valor){
         Operacao op = new Operacao(NumeroConta, 0, valor);
 
-        Extrato.add(op);
+        Extrato.adicionar(op);
 
         Saldo += valor;
     }
@@ -40,7 +37,7 @@ public class ContaBancaria {
     public void SacarSaldo(double valor){
         Operacao op = new Operacao(NumeroConta, 1, valor);
 
-        Extrato.add(op);
+        Extrato.adicionar(op);
 
         Saldo -= valor;
     }
@@ -49,7 +46,7 @@ public class ContaBancaria {
 
         for(int i = 0; i < vetor.length; i++){
             if(vetor[i].NumeroConta == this.NumeroConta){
-                Extrato.add(vetor[i]);
+                Extrato.adicionar(vetor[i]);
             }
         }
     }
@@ -58,4 +55,7 @@ public class ContaBancaria {
         return "Conta: " + NumeroConta + ", Saldo: " + Saldo;
     }
 
+    public void ExtratoConta(){
+        Extrato.mostrar();
+    }
 }

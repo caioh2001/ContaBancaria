@@ -2,6 +2,8 @@ import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class App {
@@ -16,11 +18,19 @@ public class App {
 
         ContaBancaria[] vetorContas = CarregarContas();
 
+        OrdenacaoContas(vetorContas);
+
+        List<ContaBancaria> listaContas = new ArrayList<>();
+
+        for (ContaBancaria conta : vetorContas) {
+            listaContas.add(conta);
+        }
+
         Cliente[] vetorClientes = CarregarClientes();
-        CarregarContasClientes(vetorClientes, vetorContas);
+        CarregarContasClientes(vetorClientes, listaContas);
 
         Operacao[] vetorOperacoes = CarregarOperacoes();
-        CarregarOperacoesContas(vetorContas, vetorOperacoes);
+        CarregarOperacoesContas(listaContas, vetorOperacoes);
 
         System.out.println("Digite o número que corresponde a opção desejada: ");
         System.out.println("1 - Consultar uma conta pelo ID");
@@ -34,22 +44,21 @@ public class App {
 
         switch(selecao){
             case 1:{
-
-                vetorContas = CarregarContas();
+                // buscar conta
 
                 System.out.println("Digite o número da conta: ");
                 int busca = scanner.nextInt();
-
-                for(int i = 0; i < vetorContas.length; i++){
-                    if(vetorContas[i].NumeroConta == busca){
-                        System.out.println(vetorContas[i].toString());
+ 
+                for (ContaBancaria conta : listaContas) {
+                    if(conta.NumeroConta == busca){
+                        System.out.println(conta);
                     }
                 }
+
                 break;
             }
             case 2:{
-
-                vetorContas = CarregarContas();
+                // inserir conta
 
                 System.out.println("Digite um ID para a conta: ");
                 int n = scanner.nextInt();
@@ -75,16 +84,9 @@ public class App {
                 break;
             }
             case 3:{
-
-                vetorContas = CarregarContas();
-
-                OrdenacaoContas(vetorContas);
-
-                for(ContaBancaria conta : vetorContas){
-                    System.out.println(conta.toString());
+                for (ContaBancaria conta : listaContas) {
+                    System.out.println(conta);
                 }
-                
-                break;
             }
             case 4:{
                 System.out.println("Digite o CPF do cliente: ");
@@ -103,16 +105,15 @@ public class App {
                 break;
             }
             case 5:{
+                // Trazer o extrato da conta
+
                 System.out.println("Digite o número da conta: ");
                 int busca = scanner.nextInt();
 
-                for(int i = 0; i < vetorContas.length; i++){
-                    if(vetorContas[i].NumeroConta == busca){
-                        System.out.println("Conta: " + vetorContas[i].NumeroConta);
-
-                        for(Operacao op : vetorContas[i].Extrato){
-                            System.out.println(op);
-                        }
+                for (ContaBancaria conta : listaContas) {
+                    if(conta.NumeroConta == busca)
+                    {
+                        conta.ExtratoConta();
                     }
                 }
 
@@ -133,6 +134,7 @@ public class App {
     }
 
     public static ContaBancaria[] CarregarContas() throws FileNotFoundException{
+
         int tamanhoVetor = 0;
 
         String caminhoArquivo = "contas.txt";
@@ -156,7 +158,7 @@ public class App {
             String line = scan2.nextLine();
             String[] textoSeparado = line.split(";");
             int n = Integer.parseInt(textoSeparado[0]);
-            long c = Long.parseLong(textoSeparado[1]);
+            Long c = Long.parseLong(textoSeparado[1]);
             double s = Double.parseDouble(textoSeparado[2]);
 
             ContaBancaria conta = new ContaBancaria(n,c,s);
@@ -169,6 +171,7 @@ public class App {
     }
 
     public static Cliente[] CarregarClientes() throws FileNotFoundException{
+
         int tamanhoVetor = 0;
 
         String caminhoArquivo = "clientes.txt";
@@ -203,10 +206,10 @@ public class App {
         return vetorClientes;
     }
 
-    public static void CarregarContasClientes(Cliente[] vetClientes, ContaBancaria[] vetContas){
+    public static void CarregarContasClientes(Cliente[] vetClientes, List<ContaBancaria> listContas){
 
         for(int i = 0; i < vetClientes.length; i++){
-            vetClientes[i].CarregarContas(vetContas);
+            vetClientes[i].CarregarContas(listContas);
         }
     }
 
@@ -246,10 +249,10 @@ public class App {
         return vetorOp;
     }
 
-    public static void CarregarOperacoesContas(ContaBancaria[] vetContas, Operacao[] vetOp){
+    public static void CarregarOperacoesContas(List<ContaBancaria> listContas, Operacao[] vetOp){
 
-        for(int i = 0; i < vetContas.length; i++){
-            vetContas[i].CarregarOperacoes(vetOp);
+        for (ContaBancaria conta : listContas) {
+            conta.CarregarOperacoes(vetOp);
         }
     }
 
