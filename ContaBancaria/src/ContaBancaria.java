@@ -1,3 +1,9 @@
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.LinkedList;
+import java.util.Queue;
+
 public class ContaBancaria {
     
     // Crie uma classe ContaBancaria. Uma conta bancaria tem um numero, o CPF do titular e um saldo.
@@ -16,38 +22,61 @@ public class ContaBancaria {
     // de operacoes de uma conta.
 
     int NumeroConta;
-    long CPFTitular;
+    String CPFTitular;
     double Saldo;
-    FilaContas Extrato = new FilaContas(5);
+    Queue<Operacao> Extrato = new LinkedList<Operacao>();
 
-    public ContaBancaria(int nConta, long CPF, double saldo){
+    public ContaBancaria(int nConta, String CPF, double saldo){
         this.NumeroConta = nConta;
         this.CPFTitular = CPF;
         this.Saldo = saldo;
     }
 
-    public void AdicionarSaldo(double valor){
-        Operacao op = new Operacao(NumeroConta, 0, valor);
+    public void AdicionarSaldo(Operacao op) throws IOException{
 
-        Extrato.adicionar(op);
+        Extrato.add(op);
 
-        Saldo += valor;
+        Saldo += op.Valor;
+
+        String caminhoArquivo = "Banco_Operacoes2022.txt";
+        
+        FileWriter fw = new FileWriter( caminhoArquivo, true );
+
+        BufferedWriter bw = new BufferedWriter( fw );
+
+        bw.newLine();
+        bw.write(op.NumeroConta + ";" + op.CodOperacao + ";" + op.Valor + ";" + op.Data);
+
+        bw.close();
+        fw.close();
     }
 
-    public void SacarSaldo(double valor){
-        Operacao op = new Operacao(NumeroConta, 1, valor);
+    public void SacarSaldo(Operacao op) throws IOException{
 
-        Extrato.adicionar(op);
+        Extrato.add(op);
 
-        Saldo -= valor;
+        Saldo -= op.Valor;
+
+        String caminhoArquivo = "Banco_Operacoes2022.txt";
+        
+        FileWriter fw = new FileWriter( caminhoArquivo, true );
+
+        BufferedWriter bw = new BufferedWriter( fw );
+
+        bw.newLine();
+        bw.write(op.NumeroConta + ";" + op.CodOperacao + ";" + op.Valor + ";" + op.Data);
+
+        bw.close();
+        fw.close();
     }
 
-    public void CarregarOperacoes(Operacao[] vetor){
+    public void salvarOperacoes(Operacao op) throws IOException{
 
-        for(int i = 0; i < vetor.length; i++){
-            if(vetor[i].NumeroConta == this.NumeroConta){
-                Extrato.adicionar(vetor[i]);
-            }
+        if(op.CodOperacao == 0){
+            AdicionarSaldo(op);
+        }
+        else{
+            SacarSaldo(op);
         }
     }
 
@@ -55,7 +84,11 @@ public class ContaBancaria {
         return "Conta: " + NumeroConta + ", Saldo: " + Saldo;
     }
 
-    public void ExtratoConta(){
-        Extrato.mostrar();
+    public void mostrarExtrato(){
+        System.out.println("Extrato da conta " + NumeroConta);
+        for (Operacao operacao : Extrato) {
+            System.out.println(operacao);
+        }
+        System.out.println("Saldo atual: " + Saldo);
     }
 }

@@ -2,11 +2,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Cliente {
-    long CPF;
+    String CPF;
     String Nome;
     List<ContaBancaria> Contas = new ArrayList<ContaBancaria>();
 
-    public Cliente(Long cpf, String nome){
+    public Cliente(String cpf, String nome){
         this.CPF = cpf;
         this.Nome = nome;
     }
@@ -16,12 +16,23 @@ public class Cliente {
         return "CPF: " + CPF + " ,Nome: " + Nome;
     }
 
-    public void CarregarContas(List<ContaBancaria> lista){
+    public void AdicionarConta(ContaBancaria conta){
+        Contas.add(conta);
+    }
 
-        for (ContaBancaria conta : lista) {
-            if(conta.CPFTitular == this.CPF){
-                Contas.add(conta);
-            }
+    public void MostrarContas(){
+        System.out.println("Contas do cliente " + Nome);
+        for (ContaBancaria contaBancaria : Contas) {
+            System.out.println(contaBancaria);
         }
+    }
+
+    public double SaldoTotal(){
+        double total = 0;
+        for (ContaBancaria contaBancaria : Contas) {
+            total += contaBancaria.Saldo;
+        }
+
+        return total;
     }
 }

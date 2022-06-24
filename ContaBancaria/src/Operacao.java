@@ -1,16 +1,15 @@
-import java.sql.Date;
 
 public class Operacao {
     int NumeroConta;
     int CodOperacao;
     double Valor;
-    Date Data;
+    String Data;
 
-    public Operacao(int numeroConta, int codOperacao, double valor){
+    public Operacao(int numeroConta, int codOperacao, double valor, String dt){
         this.NumeroConta = numeroConta;
         this.CodOperacao = codOperacao;
         this.Valor = valor;
-        Data = new Date(System.currentTimeMillis());
+        this.Data = dt;
     }
 
     public String toString(){
